@@ -19,7 +19,7 @@ const Home: FC<IHome> = ({
 	console.log('trendingPeople', trendingPeople, trendingTv, 'trendingTv')
 	return (
 		<div>
-			<div className='flex'>
+			<div className=' hidden md:block '>
 				<Search />
 			</div>
 			<Carousel movies={trandingMovie} />

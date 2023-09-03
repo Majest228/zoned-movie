@@ -26,7 +26,7 @@ const Navigation: FC = () => {
 
 	console.log('newArray', newArray)
 	return (
-		<div className='fixed border-r-2 h-full border-white max-w-[300px] w-full'>
+		<div className={styles.navigation}>
 			<NavigationLogo />
 			{navigation_menu.map((menu: INavigaiton) => (
 				<NavigationMenu title={menu.title} items={menu.items} />
