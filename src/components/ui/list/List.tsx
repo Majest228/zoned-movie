@@ -3,14 +3,8 @@ import Card from '@/src/components/ui/card/Card'
 import { Icon } from '@iconify/react'
 import './List.css'
 import { IList } from '@/src/interfaces/list.interface'
-const List: FC<IList> = ({
-	error,
-	isError,
-	isLoading,
-	movies,
-	title,
-	typeRequest,
-}) => {
+import CardSkeleton from '../skeletons/CardSkeleton'
+const List: FC<IList> = ({ movies, title, typeRequest }) => {
 	const boxRef = useRef<any>(null)
 	const [iconHovered, setIconHovered] = useState(0)
 
@@ -95,24 +89,18 @@ const List: FC<IList> = ({
 				className='test pl-[5px] pr-[5px] flex pt-3 overflow-x-auto scroll-smooth z-[10] flex-nowrap items-start gap-[15px]'
 				ref={boxRef}
 			>
-				{isError ? (
-					<h3>{error?.message}</h3>
-				) : isLoading ? (
-					<h3>Loading...</h3>
-				) : (
-					movies?.results?.map((movie: any) => (
-						<div className='max-w-[240px] z-[10]' key={movie.id}>
-							<Card
-								borderRadius={24}
-								height={300}
-								width={202}
-								typeRequest={typeRequest}
-								movie={movie}
-								type={'big'}
-							/>
-						</div>
-					))
-				)}
+				{movies?.results?.map((movie: any) => (
+					<div className='max-w-[240px] z-[10]' key={movie.id}>
+						<Card
+							borderRadius={24}
+							height={300}
+							width={202}
+							typeRequest={typeRequest}
+							movie={movie}
+							type={'big'}
+						/>
+					</div>
+				))}
 			</div>
 		</div>
 	)

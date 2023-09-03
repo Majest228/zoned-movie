@@ -11,7 +11,4 @@ export interface ICarousel {
 
 export interface ICarouselItems {
 	movies: IMovies
-	isLoading: boolean
-	isError: boolean
-	error: any
 }

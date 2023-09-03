@@ -6,3 +6,9 @@ export interface IMovies {
 	total_pages: number
 	total_results: number
 }
+
+export interface IMoviesfilters {
+	id: number
+	sort: string
+	name: string
+}

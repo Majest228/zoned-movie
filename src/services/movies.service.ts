@@ -14,9 +14,14 @@ export const MoviesService = {
 		return res.data
 	},
 
-	async getMovieByGenres(with_genres: number) {
+	async getMovieByGenres(
+		with_genres: number,
+		sort_by: string,
+		year: number,
+		page: number
+	) {
 		const res = await axiosWithToken.get(
-			`discover/movie?with_genres=${with_genres}`
+			`discover/movie?with_genres=${with_genres}&sort_by=${sort_by}&year=${year}&page=${page}`
 		)
 		return res.data
 	},

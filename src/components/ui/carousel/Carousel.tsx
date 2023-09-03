@@ -3,12 +3,7 @@ import React, { FC, useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { carousel } from './carouselItems'
 import { ICarousel, ICarouselItems } from '@/src/interfaces/carousel.interface'
-const Carousel: FC<ICarouselItems> = ({
-	movies,
-	isLoading,
-	isError,
-	error,
-}) => {
+const Carousel: FC<ICarouselItems> = ({ movies }) => {
 	const [currentIndex, setCurrentIndex] = useState<number>(0)
 
 	const goToNextSlide = () => {

@@ -7,6 +7,7 @@ import { useGetImageUrl } from '@/src/hooks/useGetImageUrl'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import IconButton from '../icon-button/IconButton'
 import { ICard } from '@/src/interfaces/card.interface'
+import errorImg from '../../../assets/error.jpg'
 const Card: FC<ICard> = ({
 	width = 226,
 	height = 280,
@@ -34,13 +35,15 @@ const Card: FC<ICard> = ({
 				>
 					<div className='flex flex-col  '>
 						<Image
-							src={useGetImageUrl(
-								typeRequest == 'movie'
-									? movie?.poster_path
-									: typeRequest == 'tv'
-									? movie?.poster_path
-									: movie?.profile_path
-							)}
+							src={
+								movie?.poster_path == null || movie?.profile_path == null
+									? errorImg.src
+									: useGetImageUrl(
+											typeRequest == 'movie'
+												? movie?.poster_path
+												: movie?.profile_path
+									  )
+							}
 							alt={'alt'}
 							width={width}
 							height={height}
@@ -128,13 +131,15 @@ const Card: FC<ICard> = ({
 							</div>
 						)}
 						<Image
-							src={useGetImageUrl(
-								typeRequest == 'movie'
-									? movie?.poster_path
-									: typeRequest == 'tv'
-									? movie?.poster_path
-									: movie?.profile_path
-							)}
+							src={
+								movie?.poster_path === null || movie?.profile_path === null
+									? errorImg.src
+									: useGetImageUrl(
+											typeRequest == 'movie' || typeRequest == 'tv'
+												? movie?.poster_path
+												: movie?.profile_path
+									  )
+							}
 							alt={'alt'}
 							width={width}
 							height={height}
@@ -149,7 +154,13 @@ const Card: FC<ICard> = ({
 						/>
 					</div>
 					<h3 className='text-gray-300 mt-2 text-[16px] font-semibold'>
-						{typeRequest == 'movie' ? movie.title : movie.name}
+						{typeRequest == 'movie'
+							? movie.title == '' || null || undefined
+								? movie.original_title
+								: movie.title
+							: movie.name == '' || null || undefined
+							? ''
+							: movie.name}
 					</h3>
 					{typeRequest == 'movie' || typeRequest == 'tv' ? (
 						<p className='text-gray-400 text-[14px] font-semibold'>
