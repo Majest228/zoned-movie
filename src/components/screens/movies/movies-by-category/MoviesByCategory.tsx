@@ -11,9 +11,12 @@ import { IMoviesfilters } from '@/src/interfaces/movies.interface'
 import CardSkeleton from '@/src/components/ui/skeletons/CardSkeleton'
 import CustomSelect from '@/src/components/ui/custom-select/CustomSelect'
 import { useGetAllYears } from '@/src/hooks/useGetAllYears'
+import Pagination from '@/src/components/ui/pagination/Pagination'
 const MoviesByCategory = () => {
 	const queryClient = useQueryClient()
-	const [currentPage, setCurrentPage] = useState(1)
+	// const [currentPage, setCurrentPage] = useState(1)
+	const currentPage = useRef(1)
+	const maxPage = 500
 	const params: any = useParams()
 
 	const filterKey = useRef('popularity.asc')
@@ -32,7 +35,6 @@ const MoviesByCategory = () => {
 	const [genresName, setGenresName] = useState('')
 	const genresId = useRef(params.id)
 
-	// const [yearsName, setYearsName] = useState(0)
 	const yearsName = useRef(0)
 
 	const checkGenres = isLoadingGenres
@@ -57,24 +59,10 @@ const MoviesByCategory = () => {
 				genresId.current,
 				filterKey?.current,
 				yearsName.current,
-				currentPage
+				currentPage.current
 			),
 	})
 
-	useEffect(
-		() =>
-			console.log(
-				'status',
-				status,
-				'isFetching',
-				isFetching,
-				'isFetched',
-				isFetched,
-				'isRefetching',
-				isRefetching
-			),
-		[status, isRefetching, isFetched]
-	)
 	const onHadleChangeValueYears = (value: number) => {
 		yearsName.current = value
 		queryClient.invalidateQueries('movies-by-genre')
@@ -82,6 +70,68 @@ const MoviesByCategory = () => {
 	const onHadleChangeValueGenres = (value: string) => {
 		setGenresName(value)
 		queryClient.invalidateQueries('movies-by-genre')
+	}
+
+	const handlePageChange = (newPage: number) => {
+		if (newPage >= 1 && newPage <= maxPage) {
+			currentPage.current = newPage
+			moviesGenresRefetch()
+		}
+	}
+
+	const renderPageNumbers = () => {
+		const pageNumbers = []
+		for (let i = currentPage.current - 3; i <= currentPage.current + 3; i++) {
+			if (i >= 1 && i <= maxPage) {
+				pageNumbers.push(i)
+			}
+		}
+
+		const renderEllipsisLeft = currentPage.current > 4 && (
+			<>
+				<span
+					className='ellipsis'
+					onClick={() => {
+						moviesGenresRefetch()
+						handlePageChange(1)
+					}}
+				>
+					1
+				</span>
+				<span className='ellipsis'>...</span>
+			</>
+		)
+
+		const renderEllipsisRight = currentPage.current < maxPage - 3 && (
+			<>
+				<span className='ellipsis'>...</span>
+				<span
+					className='ellipsis'
+					onClick={() => {
+						handlePageChange(maxPage)
+						moviesGenresRefetch()
+					}}
+				>
+					{maxPage}
+				</span>
+			</>
+		)
+
+		return (
+			<>
+				{renderEllipsisLeft}
+				{pageNumbers.map(page => (
+					<button
+						key={page}
+						onClick={() => handlePageChange(page)}
+						className={page === currentPage.current ? 'active' : ''}
+					>
+						{page}
+					</button>
+				))}
+				{renderEllipsisRight}
+			</>
+		)
 	}
 
 	return (
@@ -208,6 +258,7 @@ const MoviesByCategory = () => {
 					))
 				)}
 			</div>
+			{renderPageNumbers()}
 		</div>
 	)
 }
