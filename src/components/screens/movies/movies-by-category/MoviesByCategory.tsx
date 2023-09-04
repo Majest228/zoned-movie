@@ -11,7 +11,6 @@ import { IMoviesfilters } from '@/src/interfaces/movies.interface'
 import CardSkeleton from '@/src/components/ui/skeletons/CardSkeleton'
 import CustomSelect from '@/src/components/ui/custom-select/CustomSelect'
 import { useGetAllYears } from '@/src/hooks/useGetAllYears'
-import Pagination from '@/src/components/ui/pagination/Pagination'
 const MoviesByCategory = () => {
 	const queryClient = useQueryClient()
 	// const [currentPage, setCurrentPage] = useState(1)
